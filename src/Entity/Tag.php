@@ -57,33 +57,6 @@ class Tag
     }
 
     /**
-     * @return Collection|Company[]
-     */
-    public function getCompanies(): Collection
-    {
-        return $this->companies;
-    }
-
-    public function addCompany(Company $company): self
-    {
-        if (!$this->companies->contains($company)) {
-            $this->companies[] = $company;
-            $company->addTag($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCompany(Company $company): self
-    {
-        if ($this->companies->removeElement($company)) {
-            $company->removeTag($this);
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Campaign[]
      */
     public function getCampaigns(): Collection
