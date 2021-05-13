@@ -1,0 +1,5 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <a href="{{ path('app.tag.edit', {id: id}) }}" class="btn btn-primary">New Tag</a>
+    <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

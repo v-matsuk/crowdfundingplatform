@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ tag.name }}{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>{{ tag.name }}</h1>
+    {% for campaign in tag.campaigns %}
+        <a href="{{path('app.campaign', {id: campaign.id}) }}"><h3>{{ campaign.name }}</h3></a>
+        <h5>
+            {% if campaign.description%}
+                {{ campaign.description }} <br>
+            {% endif %}
+            Expiration Date:{{ campaign.expirationDate|date('d.m.Y') }} <br>
+            <div class="row">
+                <div class="col-3">
+                    <div class="progress" style="height: 32px">
+                        <div class="progress-bar bg-success"
+                             style="width: {{ (campaign.currentMoney/campaign.moneyGoal)*100 }}%">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h5>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,210 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{campaign.name}}{% endblock %}
+
+{% block body %}
+    <div class="container" id="base info">
+        <div class="text-center">
+            <h1>{{campaign.name}}</h1>
+            <h2><a href="{{ path('app.theme', {id:campaign.theme.id}) }}">{{ campaign.theme }}</a></h2>
+            <h3>{{ campaign.description }}</h3>
+            <div class="row-center">
+                {% for tag in campaign.tags %}
+                    <a href="{{ path('app.tag', {id:tag.id}) }}" class="badge badge-secondary">{{ tag.name }}</a>
+                {% endfor %}
+            </div>
+            <h4>Average Rating: {{ campaign.rating }} by {{ campaign.numberOfRatings}} Users</h4>
+            <h6>Last Time Updated: {{ campaign.date|date('d.m.Y') }}</h6>
+            <div id="stars">
+                {% if campaign.rating >= 1 %}
+                    <i class="fa fa-star"></i>
+                {% else %}
+                    <i class="fa fa-star-o"></i>
+                {% endif %}
+                {% if campaign.rating >= 2 %}
+                    <i class="fa fa-star"></i>
+                {% elseif campaign.rating >= 1.5%}
+                    <i class="fa fa-star-half-o"></i>
+                {% else %}
+                    <i class="fa fa-star-o"></i>
+                {% endif %}
+                {% if campaign.rating >= 3 %}
+                    <i class="fa fa-star"></i>
+                {% elseif campaign.rating >= 2.5%}
+                    <i class="fa fa-star-half-o"></i>
+                {% else %}
+                    <i class="fa fa-star-o"></i>
+                {% endif %}
+                {% if campaign.rating >= 4 %}
+                    <i class="fa fa-star"></i>
+                {% elseif campaign.rating >= 3.5%}
+                    <i class="fa fa-star-half-o"></i>
+                {% else %}
+                    <i class="fa fa-star-o"></i>
+                {% endif %}
+                {% if campaign.rating >= 5 %}
+                    <i class="fa fa-star"></i>
+                {% elseif campaign.rating >= 4.5%}
+                    <i class="fa fa-star-half-o"></i>
+                {% else %}
+                    <i class="fa fa-star-o"></i>
+                {% endif %}
+            </div>
+            {% if isRated %}
+                <button class="btn btn-primary btn-sm disabled" disabled>Vote</button>
+                <h6>You have already rated this campaign</h6>
+            {% else %}
+                <a href="{{ path('app.vote', {id: campaign.id}) }}" class="btn btn-primary btn-sm">Vote</a>
+            {% endif %}
+            <h5>by <a href="{{ path('app.profile', {id: campaign.user.id}) }}">{{ campaign.user.username }}</a></h5>
+        </div>
+    </div>
+
+    <div class="container" id="content">
+        <div class="row">
+            <div class="col-sm-9">
+                <div class="text-center" id="video">
+                    {% if campaign.video %}
+                    <h2>Video</h2>
+                    <iframe width="640" height="360"
+                            src="{{ campaign.video }}"
+                            title="YouTube video player" frameborder="5"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                    </iframe>
+                    {% endif %}
+                </div>
+
+                <div class="text-center" id="gallery">
+                    <h2 class="text-center" style="margin-top: 20px">Gallery</h2>
+                    <img src="https://greenmoon.by/wp-content/uploads/2020/05/placeholder-300x200.png" alt="" width="270" height="150">
+                    <img src="https://greenmoon.by/wp-content/uploads/2020/05/placeholder-300x200.png" alt="" width="270" height="150">
+                    <img src="https://greenmoon.by/wp-content/uploads/2020/05/placeholder-300x200.png" alt="" width="270" height="150">
+                    <img src="https://greenmoon.by/wp-content/uploads/2020/05/placeholder-300x200.png" alt="" width="270" height="150">
+                    <img src="https://greenmoon.by/wp-content/uploads/2020/05/placeholder-300x200.png" alt="" width="270" height="150">
+                    <img src="https://greenmoon.by/wp-content/uploads/2020/05/placeholder-300x200.png" alt="" width="270" height="150">
+                </div>
+
+                <div id="posts">
+                    <h2 class="text-center" style="margin-top: 20px">News:</h2>
+                    {% if app.user %}
+                        {% if campaign.user.id == app.user.id or is_granted('ROLE_ADMIN')%}
+                            <div class="text-center">
+                                <a href="{{ path('app.post.new', {id:campaign.id}) }}" class="btn btn-primary"
+                                   style="margin-bottom: 20px">Create new post</a>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                    {% if posts %}
+                        {% for post in posts|reverse %}
+                            <h3>{{ post.name }}
+                                {% if app.user %}
+                                    {% if campaign.user.id == app.user.id or is_granted('ROLE_ADMIN')%}
+                                        <a href="{{ path('app.post.edit', {id:campaign.id, id2:post.id}) }}">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                    {% endif %}
+                                {% endif %}
+                            </h3>
+                            <h6>{{ post.date|date('d.m.Y') }}</h6>
+                            {% if post.image %}
+                                <div class="text-center">
+                                    <img src="{{ post.image }}" alt="" width="640" height="360">
+                                </div>
+                            {% endif %}
+                            <p>{{ post.text }}</p>
+                        {% endfor %}
+                    {% else %}
+                        <h3>There is no posts :(</h3>
+                    {% endif %}
+                </div>
+
+                <div id="comment">
+                    <h2 class="text-center"> Comments </h2>
+                    {% if comments %}
+                        {% for comment in comments %}
+                            <h4>{{ comment.user.name }}</h4>
+                            <h6>{{ comment.date|date('d.m.Y') }}</h6>
+                            <p>{{ comment.text }}
+                                {% if app.user %}
+                                    <br>
+                                    <a href="#"><i class="fa fa-thumbs-down"></i></a>
+                                    {{ comment.rating }}
+                                    <a href="#"><i class="fa fa-thumbs-up"></i></a>
+                                {% else %}
+                                    <br>
+                                    <i class="fa fa-thumbs-down"></i>
+                                    {{ comment.rating }}
+                                    <i class="fa fa-thumbs-up"></i>
+                                {% endif %}
+
+                            </p>
+                        {% endfor %}
+                    {% else %}
+                        <h4>There is no comments :( <br>
+                        Leave first</h4>
+                    {% endif %}
+                    {% if app.user %}
+                        <div style="margin-bottom: 20px">
+                            {{ include('comment/_form.html.twig', {'button_label': 'Send'}) }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-sm-3 text-center" id="campaignInfo">
+                <h2>Goal</h2>
+                <div class="progress" style="height: 32px">
+                    <div class="progress-bar bg-success" role="progressbar"
+                         style="width: {{ (campaign.currentMoney/campaign.moneyGoal)*100 }}%">
+                    </div>
+                </div>
+
+                <h4>{{ campaign.currentMoney }}$ of {{ campaign.moneyGoal }} pledged</h4>
+                {% set exp = campaign.expirationDate|date('d-m-Y') %}
+                {% set today = "now"|date('d-m-Y') %}
+                {% if exp >= today %}
+                    {% set difference = date(today).diff(date(exp))%}
+                    {% set leftDays = difference.days %}
+                    {% if leftDays>0 %}
+                        <h3 style="margin-top: 20px">{{ leftDays }} days to go </h3>
+                    {% else %}
+                        <h3 style="margin-top: 20px">Last day to support {{ campaign.name }}</h3>
+                    {% endif %}
+
+                    <a href="{{ path('app.donate.new', {id:campaign.id}) }}" class="btn btn-success" style="margin-top: 20px; margin-bottom: 20px">Support {{ campaign.name }}</a>
+
+                    <div id="bonus">
+                        {% if app.user %}
+                            {% if campaign.user.id == app.user.id or is_granted('ROLE_ADMIN')%}
+                                <a href="{{ path('app.bonus.new', {id:campaign.id}) }}" class="btn btn-success"
+                                   style="margin-bottom: 20px">Create new bonus</a>
+                            {% endif %}
+                        {% endif %}
+                        {% if bonuses %}
+                            <h2>Bonuses:</h2>
+                            {% for bonus in bonuses %}
+                                <div class="btn btn-block btn-light">
+                                    <h3>{{ bonus.name }}
+                                        {% if app.user %}
+                                            {% if campaign.user.id == app.user.id or is_granted('ROLE_ADMIN')%}
+                                                <a href="{{ path('app.bonus.edit', {id:campaign.id, id2:bonus.id}) }}">
+                                                    <i class="fa fa-edit"></i></a>
+                                            {% endif %}
+                                        {% endif %}
+                                    </h3>
+                                    <p>{{ bonus.description }}</p>
+                                    <a href="{{ path('app.donate.current', {id: campaign.id, id2: bonus.id}) }}" class="btn btn-success">Support with {{ bonus.price }}$</a>
+                                </div>
+                                <br>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                {% else %}
+                    <h3>The campaign closed</h3>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

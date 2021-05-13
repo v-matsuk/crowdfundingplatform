@@ -1,0 +1,44 @@
+{% extends 'admin/admin.html.twig' %}
+
+{% block body %}
+    {{ parent() }}
+<div class="container-fluid" style="margin-top: 20px">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Campaign</th>
+                <th>Theme</th>
+                <th>Description</th>
+                <th>Video</th>
+                <th>Money goal</th>
+                <th>Current money</th>
+                <th>Expiration day</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for campaign in campaigns %}
+            <tr>
+                <td> <a href="{{ path('app.campaign', {id: campaign.id }) }}">{{ campaign.name }}</a> </td>
+                <td> {{ campaign.theme }}</td>
+                <td>{{ campaign.description }}</td>
+                <td><a href="{{ campaign.video }}">{{ campaign.video }}</a></td>
+                <td>{{ campaign.moneyGoal }}</td>
+                <td>{{ campaign.currentMoney }}</td>
+                <td>{{ campaign.expirationDate|date('d.m.Y') }}</td>
+                <td>
+                    <a href="{{ path('app.admin.campaign.show', {'id': campaign.id}) }}" class="btn btn-primary">Show</a>
+                    <a href="{{ path('app.admin.campaign.edit', {'id': campaign.id}) }}" class="btn btn-primary">Edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('app.admin.campaign.new') }}" class="btn btn-primary">Create new</a>
+</div>
+
+{% endblock %}

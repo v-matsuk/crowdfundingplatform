@@ -1,0 +1,38 @@
+{% extends 'admin/admin.html.twig' %}
+
+{% block title %}Bonus index{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+<div class="container-fluid" style="margin-top: 20px">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Description</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for bonus in bonuses %}
+            <tr>
+                <td>{{ bonus.name }}</td>
+                <td>{{ bonus.price }}</td>
+                <td>{{ bonus.description }}</td>
+                <td>
+                    <a href="{{ path('app.admin.bonus.show', {'id': bonus.id}) }}" class="btn btn-primary">show</a>
+                    <a href="{{ path('app.admin.bonus.edit', {'id': bonus.id}) }}" class="btn btn-primary">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app.admin.bonus.new') }}" class="btn btn-primary">Create new</a>
+</div>
+{% endblock %}

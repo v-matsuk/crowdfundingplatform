@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin Panel{% endblock %}
+
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="text-center">
+            <div class="btn-group">
+                <a href="{{ path('app.admin.user') }}" class="btn btn-secondary"> Users</a>
+                <a href="{{ path('app.admin.campaign') }}" class="btn btn-secondary"> Companies</a>
+                <a href="{{ path('app.admin.post') }}" class="btn btn-secondary"> Posts</a>
+                <a href="{{ path('app.admin.bonus') }}" class="btn btn-secondary"> Bonuses</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

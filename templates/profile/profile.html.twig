@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ user.username }}{% endblock %}
+
+{% block body %}
+    <div id="content" class="container p-0">
+        <div class="profile-header text-center">
+            <div class="profile-header-content">
+                <div class="profile-header-info">
+                    <div class="avatar">
+                        {% if user.profileImage %}
+                            <img alt="Profile image" src={{ user.profileImage }}>
+                        {% else %}
+                            <img alt="Profile image" src="https://t4.ftcdn.net/jpg/02/15/84/43/240_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg">
+                        {% endif %}
+                    </div>
+                    <h2 class="m-t-sm">{{ user.name }}</h2>
+                    <p class="m-b-sm">{{ user.email }}</p>
+                    {% if app.user %}
+                        {% if user.id == app.user.id or is_granted('ROLE_ADMIN')%}
+                            <a href="{{ path('app.profile.edit', { id:user.id }) }}"
+                               class="btn btn-primary"> Edit profile</a>
+                        {% endif %}
+                    {% endif %}
+                    <h3 class="m-t-sm">Bonuses:</h3>
+                    <div class="row">
+                        {% if payments %}
+                            {% for payment in payments %}
+                                {% if payment.name %}
+                                    <div class="col">
+                                        <div class="btn btn-block btn-success">
+                                            {{ payment.name }} <br>
+                                            {{ payment.description }}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if app.user %}
+        {% if user.id == app.user.id or is_granted('ROLE_ADMIN')%}
+            <div class="container-fluid">
+                <h1>Campaigns:</h1>
+                <a href="{{ path('app.campaign.new', {id:app.user.id}) }}" class="btn btn-primary"> Create new campaign</a>
+                {% if campaigns %}
+                    <table class="table table-bordered" style="margin-top: 20px;">
+                        <tr>
+                            <th>Name</th>
+                            <th>Theme</th>
+                            <th>Money Goal</th>
+                            <th>Current Money</th>
+                            <th>Expiration Date</th>
+                            <th>Actions</th>
+                        </tr>
+                        {% for campaign in campaigns %}
+                            <tr>
+                                <td><a href="{{ path('app.campaign', {id: campaign.id }) }}">{{ campaign.name }}</a></td>
+                                <td><a href="{{ path('app.theme', {id: campaign.theme.id}) }}">{{ campaign.theme }}</a></td>
+                                <td>{{ campaign.moneyGoal }}</td>
+                                <td>{{ campaign.currentMoney }}</td>
+                                <td>{{ campaign.expirationDate|date('d.m.Y') }}</td>
+                                <td>
+                                    <a href="{{ path('app.campaign.edit', {id: campaign.id }) }}" class="btn btn-primary">Edit</a>
+                                    <a href="{{ path('app.campaign.show', {id: campaign.id}) }}" class="btn btn-primary">Show</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                {% else %}
+                    <h2>You have no campaigns :(</h2>
+                {% endif%}
+            </div>
+        {% endif %}
+    {% endif %}
+
+{% endblock %}
