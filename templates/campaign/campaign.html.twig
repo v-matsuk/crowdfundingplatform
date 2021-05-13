@@ -126,7 +126,7 @@
                             <h4>{{ comment.user.name }}</h4>
                             <h6>{{ comment.date|date('d.m.Y') }}</h6>
                             <p>{{ comment.text }}
-                                {% if app.user %}
+                                {% if app.user and !rated %}
                                     <br>
                                     <a href="#"><i class="fa fa-thumbs-down"></i></a>
                                     {{ comment.rating }}
