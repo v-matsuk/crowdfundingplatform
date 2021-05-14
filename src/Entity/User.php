@@ -23,7 +23,7 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=100, unique=true)
      */
     private $email;
 
@@ -44,7 +44,7 @@ class User implements UserInterface
     private $campaigns;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=50)
      */
     private $name;
 
@@ -64,7 +64,7 @@ class User implements UserInterface
     private $ratings;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=150, nullable=true)
      */
     private $profileImage;
 
