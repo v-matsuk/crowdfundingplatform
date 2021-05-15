@@ -29,3 +29,13 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+speicher210_cloudinary:
+    url: cloudinary://my-key:my-secret@my-cloud
+    # The next configuration variables should be defined if they are not present in the URL
+    # The URL will take precedence
+    cloud_name: my-cloud
+    access_identifier:
+        api_key: my-key
+        api_secret: my-secret
+    options:
+        secure: true
