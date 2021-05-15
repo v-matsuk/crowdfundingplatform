@@ -21,7 +21,7 @@
                         {% if campaign.description%}
                             {{ campaign.description }} <br>
                         {% endif %}
-                        Average Rating: {{ campaign.rating }} <br>
+                        Average Rating: {{ '%.2f'|format(campaign.rating) }} <br>
                         Last time updated: {{ campaign.date|date('d.m.Y') }} <br>
                         Expiration Date: {{ campaign.expirationDate|date('d.m.Y') }} <br>
                         <div class="row">
@@ -45,7 +45,7 @@
                         {% if campaign.description%}
                             {{ campaign.description }} <br>
                         {% endif %}
-                        Average Rating: {{ campaign.rating }} <br>
+                        Average Rating: {{ '%.2f'|format(campaign.rating) }} <br>
                         Last time updated: {{ campaign.date|date('d.m.Y') }} <br>
                         Expiration Date: {{ campaign.expirationDate|date('d.m.Y') }} <br>
                         <div class="row">

@@ -13,7 +13,7 @@
                     <a href="{{ path('app.tag', {id:tag.id}) }}" class="badge badge-secondary">{{ tag.name }}</a>
                 {% endfor %}
             </div>
-            <h4>Average Rating: {{ campaign.rating }} by {{ campaign.numberOfRatings}} Users</h4>
+            <h4>Average Rating: {{ '%.2f'|format(campaign.rating) }} by {{ campaign.numberOfRatings}} Users</h4>
             <h6>Last Time Updated: {{ campaign.date|date('d.m.Y') }}</h6>
             <div id="stars">
                 {% if campaign.rating >= 1 %}
