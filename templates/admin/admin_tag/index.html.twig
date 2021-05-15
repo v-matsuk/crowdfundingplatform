@@ -1,0 +1,29 @@
+{% extends 'admin/admin.html.twig' %}
+
+{% block body %}
+    {{ parent() }}
+<div class="container-fluid" style="margin-top: 20px">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for tag in tags %}
+            <tr>
+                <td>{{ tag.name }}</td>
+                <td>
+                    <a href="{{ path('app.admin.tag.edit', {'id': tag.id}) }}" class="btn btn-primary">Edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

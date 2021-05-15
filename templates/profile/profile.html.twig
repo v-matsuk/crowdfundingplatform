@@ -11,7 +11,9 @@
                         {% if user.profileImage %}
                             {{ cloudinary_image_tag( cloudinary_url(user.profileImage), {'width' : 240, 'height' : 240}) }}
                         {% else %}
-                            <img alt="Profile image" src="https://t4.ftcdn.net/jpg/02/15/84/43/240_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg">
+                            {{ cloudinary_image_tag( cloudinary_url
+                                ('https://res.cloudinary.com/crowdfundplatform/image/upload/v1621086004/profileImage/240_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69_anjvnc.jpg'),
+                                {'width' : 240, 'height' : 240}) }}
                         {% endif %}
                     </div>
                     <h2 class="m-t-sm">{{ user.name }}</h2>

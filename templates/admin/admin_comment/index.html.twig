@@ -1,0 +1,36 @@
+{% extends 'admin/admin.html.twig' %}
+
+{% block body %}
+    {{ parent() }}
+<div class="container-fluid" style="margin-top: 20px">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Text</th>
+            <th>Date</th>
+            <th>Rating</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for comment in comments %}
+            <tr>
+                <td>{{ comment.text }}</td>
+                <td>{{ comment.date ? comment.date|date('Y-m-d') : '' }}</td>
+                <td>{{ comment.rating }}</td>
+                <td>
+                    <a href="{{ path('app.admin.comment.edit', {'id': comment.id}) }}" class="btn btn-primary">Edit</a>
+                    <a href="{{ path('app.admin.comment.show', {'id': comment.id}) }}" class="btn btn-primary">Show</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app.admin.campaign.new') }}" class="btn btn-primary">Create new</a>
+</div>
+{% endblock %}
