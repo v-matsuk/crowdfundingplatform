@@ -1,23 +1,6 @@
 framework:
     router:
         utf8: true
-        hwi_oauth_redirect:
-            resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
-            prefix: /connect
-
-        hwi_oauth_connect:
-            resource: "@HWIOAuthBundle/Resources/config/routing/connect.xml"
-            prefix: /connect
-
-        hwi_oauth_login:
-            resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
-            prefix: /login
-
-        vkontakte_login:
-            path: /login/check-facebook
-
-        google_login:
-            path: /login/check-google
         # Configure how to generate URLs in non-HTTP contexts, such as CLI commands.
         # See https://symfony.com/doc/current/routing.html#generating-urls-in-commands
         #default_uri: http://localhost

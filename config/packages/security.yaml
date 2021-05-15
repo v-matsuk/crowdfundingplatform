@@ -40,17 +40,6 @@ security:
 
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
-            oauth:
-                resource_owners:
-                    google: "/login/check-google"
-                    my_custom_provider: "/login/check-custom"
-                    my_github: "/login/check-github"
-                login_path: /login
-                use_forward: false
-                failure_path: /login
-
-                oauth_user_provider:
-                    service: my.oauth_aware.user_provider.service
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
