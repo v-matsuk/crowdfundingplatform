@@ -76,13 +76,33 @@
                 </div>
 
                 <div class="text-center" id="gallery">
-                    <h2 class="text-center" style="margin-top: 20px">Gallery</h2>
-                    {{ cloudinary_image_tag( cloudinary_url('https://res.cloudinary.com/crowdfundplatform/image/upload/v1621085000/942295875_iokdb3.png'), {'width' : 270, 'height' : 150}) }}
-                    <img src="https://greenmoon.by/wp-content/uploads/2020/05/placeholder-300x200.png" alt="" width="270" height="150">
-                    <img src="https://greenmoon.by/wp-content/uploads/2020/05/placeholder-300x200.png" alt="" width="270" height="150">
-                    <img src="https://greenmoon.by/wp-content/uploads/2020/05/placeholder-300x200.png" alt="" width="270" height="150">
-                    <img src="https://greenmoon.by/wp-content/uploads/2020/05/placeholder-300x200.png" alt="" width="270" height="150">
-                    <img src="https://greenmoon.by/wp-content/uploads/2020/05/placeholder-300x200.png" alt="" width="270" height="150">
+                    <h2 class="text-center" style="margin-top: 20px">Gallery
+                        {% if app.user %}
+                            {% if campaign.user.id == app.user.id or is_granted('ROLE_ADMIN')%}
+                                <a href="{{ path('app.gallery.edit', {id:campaign.id, id2:gallery.id}) }}">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                    </h2>
+                    {% if gallery.image1 %}
+                        {{ cloudinary_image_tag( cloudinary_url(gallery.image1), {'width' : 270, 'height' : 150}) }}
+                    {% endif %}
+                    {% if gallery.image2 %}
+                        {{ cloudinary_image_tag( cloudinary_url(gallery.image2), {'width' : 270, 'height' : 150}) }}
+                    {% endif %}
+                    {% if gallery.image3 %}
+                        {{ cloudinary_image_tag( cloudinary_url(gallery.image3), {'width' : 270, 'height' : 150}) }}
+                    {% endif %}
+                    {% if gallery.image4 %}
+                        {{ cloudinary_image_tag( cloudinary_url(gallery.image4), {'width' : 270, 'height' : 150}) }}
+                    {% endif %}
+                    {% if gallery.image5 %}
+                        {{ cloudinary_image_tag( cloudinary_url(gallery.image3), {'width' : 270, 'height' : 150}) }}
+                    {% endif %}
+                    {% if gallery.image6 %}
+                        {{ cloudinary_image_tag( cloudinary_url(gallery.image4), {'width' : 270, 'height' : 150}) }}
+                    {% endif %}
                 </div>
 
                 <div id="posts">
@@ -109,7 +129,7 @@
                             <h6>{{ post.date|date('d.m.Y') }}</h6>
                             {% if post.image %}
                                 <div class="text-center">
-                                    <img src="{{ post.image }}" alt="" width="640" height="360">
+                                    {{ cloudinary_image_tag( cloudinary_url(post.image), {'width' : 640, 'height' : 360}) }}
                                 </div>
                             {% endif %}
                             <p>{{ post.text }}</p>

@@ -31,7 +31,6 @@ class Tag
 
     public function __construct()
     {
-        $this->companies = new ArrayCollection();
         $this->campaigns = new ArrayCollection();
     }
 

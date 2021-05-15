@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Bonus;
 use App\Entity\Comment;
 use App\Entity\Campaign;
+use App\Entity\Gallery;
 use App\Entity\Payment;
 use App\Entity\Post;
 use App\Entity\Rating;
@@ -35,6 +36,8 @@ class CampaignController extends AbstractController
             ['campaign' => $id],
             ['price' => 'ASC']
         );
+        $galleryRep = $this->getDoctrine()->getRepository(Gallery::class);
+        $gallery = $galleryRep->findOneBy(['campaign' => $id]);
         $postRep = $this->getDoctrine()->getRepository(Post::class);
         $posts = $postRep->findBy(['campaign' => $id]);
         $ratRep = $this->getDoctrine()->getRepository(Rating::class);
@@ -70,6 +73,7 @@ class CampaignController extends AbstractController
             'campaign' => $campaign,
             'isRated' => $isRated,
             'bonuses' => $bonuses,
+            'gallery' => $gallery,
             'posts' => $posts,
             'comments' => $comments,
             'comment' => $comment,
@@ -92,8 +96,11 @@ class CampaignController extends AbstractController
             $campaign->setRating(0);
             $campaign->setNumberOfRatings(0);
             $campaign->setCurrentMoney(0);
+            $gallery = new Gallery();
+            $gallery->setCampaign($campaign);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($campaign);
+            $entityManager->persist($gallery);
             $entityManager->flush();
 
             return $this->redirectToRoute('app.profile', array('id'=>$user));

@@ -13,6 +13,7 @@ class Tag1Type extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('campaigns')
         ;
     }
 

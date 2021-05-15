@@ -14,6 +14,8 @@ class Comment1Type extends AbstractType
         $builder
             ->add('text')
             ->add('rating')
+            ->add('user')
+            ->add('campaign')
         ;
     }
 

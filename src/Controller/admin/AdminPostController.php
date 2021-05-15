@@ -5,6 +5,7 @@ namespace App\Controller\admin;
 use App\Entity\Post;
 use App\Form\Post1Type;
 use App\Repository\PostRepository;
+use App\Service\ImageUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,6 +14,14 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/admin/post')]
 class AdminPostController extends AbstractController
 {
+    /**
+     * @var ImageUploader
+     */
+    private $imageUploader;
+
+    public function __construct(ImageUploader $imageUploader){
+        $this->imageUploader = $imageUploader;
+    }
     #[Route('/', name: 'app.admin.post', methods: ['GET'])]
     public function index(PostRepository $postRepository): Response
     {
@@ -29,6 +38,10 @@ class AdminPostController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form['file']->getData();
+            if ($file){
+                $post->setImage($this->imageUploader->uploadImageToCloudinary($file));
+            }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($post);
             $entityManager->flush();
@@ -57,8 +70,13 @@ class AdminPostController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
+            $file = $form['file']->getData();
+            if ($file){
+                $post->setImage($this->imageUploader->uploadImageToCloudinary($file));
+            }
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($post);
+            $entityManager->flush();
             return $this->redirectToRoute('app.admin.post');
         }
 

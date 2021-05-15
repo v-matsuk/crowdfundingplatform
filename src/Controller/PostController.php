@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Campaign;
 use App\Entity\Post;
 use App\Form\PostType;
+use App\Service\ImageUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +18,14 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class PostController extends AbstractController
 {
+    /**
+     * @var ImageUploader
+     */
+    private $imageUploader;
+
+    public function __construct(ImageUploader $imageUploader){
+        $this->imageUploader = $imageUploader;
+    }
     /**
      * @Route("/{id}/post/new", name="app.post.new", requirements={"id": "[0-9]+"})
      */
@@ -31,6 +40,10 @@ class PostController extends AbstractController
             $campaign = $campRep->findOneBy(['id' => $id]);
             $campaign ->setDate();
             $post->setCampaign($campaign);
+            $file = $form['file']->getData();
+            if ($file){
+                $post->setImage($this->imageUploader->uploadImageToCloudinary($file));
+            }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($post);
             $entityManager->persist($campaign);
@@ -56,7 +69,13 @@ class PostController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $file = $form['file']->getData();
+            if ($file){
+                $post->setImage($this->imageUploader->uploadImageToCloudinary($file));
+            }
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($post);
+            $entityManager->flush();
             return $this->redirectToRoute('app.campaign', array('id'=>$id));
         }
 

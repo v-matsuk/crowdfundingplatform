@@ -16,19 +16,10 @@ class ProfileType extends AbstractType
         $builder
             ->add('email')
             ->add('name')
-            ->add('profileImage', FileType::class, [
+            ->add('file', FileType::class, [
+                'mapped' => false,
                 'required' => false,
-                'data_class' => null,
-                'constraints' => [
-                    new File([
-                        'maxSize' => '1024k',
-                        'mimeTypes' => [
-                            'image/png',
-                            'image/jpeg',
-                        ],
-                        'mimeTypesMessage' => 'Please upload a valid image',
-                    ])
-                ],
+                'label' => 'Profile Image'
             ])
         ;
     }

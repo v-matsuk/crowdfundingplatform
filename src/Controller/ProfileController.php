@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Bonus;
+use App\Service\ImageUploader;
 use App\Entity\Campaign;
 use App\Entity\Payment;
 use App\Entity\User;
@@ -20,6 +20,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ProfileController extends AbstractController
 {
+    /**
+     * @var ImageUploader
+     */
+    private $imageUploader;
+
+    public function __construct(ImageUploader $imageUploader){
+        $this->imageUploader = $imageUploader;
+    }
     /**
     * @Route("/{id}", name="app.profile", requirements={"id": "[0-9]+"})
     */
@@ -47,8 +55,13 @@ class ProfileController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
+            $file = $form['file']->getData();
+            if ($file){
+                $user->setProfileImage($this->imageUploader->uploadImageToCloudinary($file));
+            }
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
             return $this->redirectToRoute('app.profile', array('id'=>$user));
         }
 

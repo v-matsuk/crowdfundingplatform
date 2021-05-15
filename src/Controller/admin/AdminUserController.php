@@ -5,6 +5,7 @@ namespace App\Controller\admin;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use App\Service\ImageUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,6 +14,14 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/admin/user')]
 class AdminUserController extends AbstractController
 {
+    /**
+     * @var ImageUploader
+     */
+    private $imageUploader;
+
+    public function __construct(ImageUploader $imageUploader){
+        $this->imageUploader = $imageUploader;
+    }
     #[Route('/', name: 'app.admin.user', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
@@ -36,8 +45,13 @@ class AdminUserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
+            $file = $form['file']->getData();
+            if ($file){
+                $user->setProfileImage($this->imageUploader->uploadImageToCloudinary($file));
+            }
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
             return $this->redirectToRoute('app.admin.user');
         }
 
