@@ -1,0 +1,10 @@
+hwi_oauth:
+    # list of names of the firewalls in which this bundle is active, this setting MUST be set
+    firewall_names: [main]
+    resource_owners:
+        resource_owners:
+            any_name:
+                type: resource_owner_of_choice
+                client_id: <client_id>
+                client_secret: <client_secret>
+

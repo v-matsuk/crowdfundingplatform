@@ -29,3 +29,8 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+my.oauth_aware.user_provider.service:
+    class: HWI\Bundle\OAuthBundle\Security\Core\User\FOSUBUserProvider
+    arguments:
+        - '@fos_user.user_manager'
+        - ['pass properties as array']
