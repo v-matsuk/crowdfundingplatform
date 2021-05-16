@@ -10,6 +10,8 @@
                     <div class="form-group">
                         <h1>Edit Gallery</h1>
                         {{ include('gallery/_form.html.twig', {'button_label': 'Edit'}) }}
+                        <a href="{{ path('app.gallery.remove', {id: id, id2:gallery.id}) }}" class="btn btn-primary">Remove from gallery</a>
+                        <br>
                         <a href="{{ path('app.campaign', {id: id}) }}" class="btn btn-primary">Back to Campaign</a>
                     </div>
                 </div>

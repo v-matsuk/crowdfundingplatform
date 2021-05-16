@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Gallery;
 use App\Form\GalleryType;
+use App\Form\RemoveGalleryType;
 use App\Service\ImageUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,8 +29,8 @@ class GalleryController extends AbstractController
      */
     public function edit(Request $request, $id, $id2):Response
     {
-        $postRep = $this->getDoctrine()->getRepository(Gallery::class);
-        $gallery = $postRep->findOneBy(['id' => $id2]);
+        $galleryRep = $this->getDoctrine()->getRepository(Gallery::class);
+        $gallery = $galleryRep->findOneBy(['id' => $id2]);
         $form = $this->createForm(GalleryType::class, $gallery);
         $form->handleRequest($request);
 
@@ -65,6 +66,50 @@ class GalleryController extends AbstractController
         }
 
         return $this->render('gallery/edit.html.twig', [
+            'gallery' =>$gallery,
+            'form' => $form->createView(),
+            'id'=>$id,
+        ]);
+    }
+    /**
+     * @Route("/{id}/gallery/{id2}/remove", name="app.gallery.remove", requirements={"id": "[0-9]+", "id2": "[0-9]+"})
+     */
+    public function remove(Request $request, $id, $id2):Response
+    {
+        $galleryRep = $this->getDoctrine()->getRepository(Gallery::class);
+        $gallery = $galleryRep->findOneBy(['id' => $id2]);
+        $form = $this->createForm(RemoveGalleryType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $toRemove = $form['toRemove']->getData();
+            if (in_array('1', $toRemove)){
+                $gallery->setImage1(null);
+            }
+            if (in_array('2', $toRemove)){
+                $gallery->setImage2(null);
+            }
+            if (in_array('3', $toRemove)){
+                $gallery->setImage3(null);
+            }
+            if (in_array('4', $toRemove)){
+                $gallery->setImage4(null);
+            }
+            if (in_array('5', $toRemove)){
+                $gallery->setImage5(null);
+            }
+            if (in_array('6', $toRemove)){
+                $gallery->setImage6(null);
+            }
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($gallery);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app.gallery.edit', array('id'=>$id, 'id2'=>$gallery->getId()));
+        }
+
+        return $this->render('gallery/remove.html.twig', [
             'gallery' =>$gallery,
             'form' => $form->createView(),
             'id'=>$id,

@@ -10,6 +10,8 @@
                     <div class="form-group">
                         <h1>Edit Profile</h1>
                         {{ include('profile/_form.html.twig', {'button_label': 'Edit'}) }}
+                        <a href="{{ path('app.profile.remove', {id: app.user.id}) }}" class="btn btn-primary">Remove profile image</a>
+                        <br>
                         <a href="{{ path('app.profile', {id:app.user.id}) }}" class="btn btn-primary">Back to Profile</a>
                     </div>
                 </div>

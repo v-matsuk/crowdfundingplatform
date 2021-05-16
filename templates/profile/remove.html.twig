@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Remove profile image{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-sm-6 col-md-4 col-md-offset-4">
+                <div class="account-wall">
+                    <div class="form-group">
+                        <h1>Remove profile image</h1>
+                        {% if user.profileImage %}
+                            {{ cloudinary_image_tag( cloudinary_url(user.profileImage), {'width' : 240, 'height' : 240}) }}
+                        {% endif %}
+                        {{ include('profile/_form.html.twig', {'button_label': 'Remove'}) }}
+                        <a href="{{ path('app.profile.edit', {id:app.user.id}) }}" class="btn btn-primary">Back to edit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

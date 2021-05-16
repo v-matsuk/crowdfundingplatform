@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Remove from gallery{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-sm-6 col-md-4 col-md-offset-4">
+                <div class="account-wall">
+                    <div class="form-group">
+                        <h1>Remove from gallery</h1>
+                        {% if gallery.image1 %}
+                            {{ cloudinary_image_tag( cloudinary_url(gallery.image1), {'width' : 270, 'height' : 150}) }}
+                        {% endif %}
+                        {% if gallery.image2 %}
+                            {{ cloudinary_image_tag( cloudinary_url(gallery.image2), {'width' : 270, 'height' : 150}) }}
+                        {% endif %}
+                        {% if gallery.image3 %}
+                            {{ cloudinary_image_tag( cloudinary_url(gallery.image3), {'width' : 270, 'height' : 150}) }}
+                        {% endif %}
+                        {% if gallery.image4 %}
+                            {{ cloudinary_image_tag( cloudinary_url(gallery.image4), {'width' : 270, 'height' : 150}) }}
+                        {% endif %}
+                        {% if gallery.image5 %}
+                            {{ cloudinary_image_tag( cloudinary_url(gallery.image3), {'width' : 270, 'height' : 150}) }}
+                        {% endif %}
+                        {% if gallery.image6 %}
+                            {{ cloudinary_image_tag( cloudinary_url(gallery.image4), {'width' : 270, 'height' : 150}) }}
+                        {% endif %}
+                        {{ include('gallery/_form.html.twig', {'button_label': 'Remove'}) }}
+                        <a href="{{ path('app.campaign', {id: id, id2:gallery.id}) }}" class="btn btn-primary">Back to edit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

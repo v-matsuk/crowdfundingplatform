@@ -49,6 +49,7 @@ class Gallery
 
     /**
      * @ORM\OneToOne(targetEntity=Campaign::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
     private $campaign;
 

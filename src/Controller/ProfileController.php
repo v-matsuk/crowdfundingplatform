@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Form\RemoveImageType;
 use App\Service\ImageUploader;
 use App\Entity\Campaign;
 use App\Entity\Payment;
@@ -68,6 +69,32 @@ class ProfileController extends AbstractController
         return $this->render('profile/edit.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
+        ]);
+    }
+    /**
+     * @Route("/{id}/remove", name="app.profile.remove", requirements={"id": "[0-9]+"})
+     */
+    public function remove(Request $request, User $user, $id):Response
+    {
+        $form = $this->createForm(RemoveImageType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $toRemove = $form['toRemove']->getData();
+            if($toRemove){
+                $user->setProfileImage(null);
+            }
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app.profile.edit', array('id'=>$id));
+        }
+
+        return $this->render('profile/remove.html.twig', [
+            'user' =>$user,
+            'form' => $form->createView(),
+            'id'=>$id,
         ]);
     }
 }

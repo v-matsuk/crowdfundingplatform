@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Remove post image{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-sm-6 col-md-4 col-md-offset-4">
+                <div class="account-wall">
+                    <div class="form-group">
+                        <h1>Remove post image</h1>
+                        {% if post.image %}
+                            {{ cloudinary_image_tag( cloudinary_url(post.image), {'width' : 640, 'height' : 360}) }}
+                        {% endif %}
+                        {{ include('profile/_form.html.twig', {'button_label': 'Remove'}) }}
+                        <a href="{{ path('app.post.edit', {id: id, id2: id2}) }}" class="btn btn-primary">Back to edit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
