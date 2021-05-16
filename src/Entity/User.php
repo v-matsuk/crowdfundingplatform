@@ -68,16 +68,6 @@ class User implements UserInterface
      */
     private $profileImage;
 
-    /**
-     * @ORM\Column(type="string", length=10)
-     */
-    private $locale;
-
-    /**
-     * @ORM\Column(type="string", length=5)
-     */
-    private $colorTheme;
-
     public function __construct()
     {
         $this->campaigns = new ArrayCollection();
@@ -315,27 +305,4 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getLocale(): ?string
-    {
-        return $this->locale;
-    }
-
-    public function setLocale(string $locale): self
-    {
-        $this->locale = $locale;
-
-        return $this;
-    }
-
-    public function getColorTheme(): ?string
-    {
-        return $this->colorTheme;
-    }
-
-    public function setColorTheme(string $colorTheme): self
-    {
-        $this->colorTheme = $colorTheme;
-
-        return $this;
-    }
 }
