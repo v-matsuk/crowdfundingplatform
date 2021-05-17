@@ -12,9 +12,9 @@ class ImageUploader
         $fileName = $file->getRealPath();
 
         Cloudinary::config([
-            "cloud_name" => $_ENV['CLOUD_NAME'],
+            'cloud_name' => $_ENV['CLOUD_NAME'],
             'api_key' => $_ENV['API_KEY'],
-            "api_secret" => $_ENV['API_SECRET'],
+            'api_secret' => $_ENV['API_SECRET'],
         ]);
 
         $imageUploaded = Uploader::upload($fileName, [

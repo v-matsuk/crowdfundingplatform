@@ -50,7 +50,7 @@ class ProfileController extends AbstractController
     /**
      * @Route("/{id}/edit", name="app.profile.edit", requirements={"id": "[0-9]+"})
      */
-    public function edit(Request $request, User $user):Response
+    public function edit(Request $request, User $user, $id):Response
     {
         $form = $this->createForm(ProfileType::class, $user);
         $form->handleRequest($request);
@@ -63,7 +63,7 @@ class ProfileController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
-            return $this->redirectToRoute('app.profile', array('id'=>$user));
+            return $this->redirectToRoute('app.profile', array('id'=>$id));
         }
 
         return $this->render('profile/edit.html.twig', [
