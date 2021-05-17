@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Like{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-sm-6 col-md-4 col-md-offset-4">
+                <div class="account-wall">
+                    <div class="form-group">
+                        <h1>Do yo want to like this comment</h1>
+                        <h4>{{ comment.user.name }}</h4>
+                        <h6>{{ comment.date|date('d.m.Y') }}</h6>
+                        <p>{{ comment.text }}
+                        {{ include('comment_rating/_form.html.twig', {'button_label': 'Submit'}) }}
+                        <a href="{{ path('app.campaign', {id:id}) }}" class="btn btn-primary">Back to Campaign</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

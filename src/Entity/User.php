@@ -68,12 +68,18 @@ class User implements UserInterface
      */
     private $profileImage;
 
+    /**
+     * @ORM\OneToMany(targetEntity=CommentRating::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $commentRatings;
+
     public function __construct()
     {
         $this->campaigns = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->payments = new ArrayCollection();
         $this->ratings = new ArrayCollection();
+        $this->commentRatings = new ArrayCollection();
     }
 
     public function __toString(): string{
@@ -301,6 +307,36 @@ class User implements UserInterface
     public function setProfileImage(?string $profileImage): self
     {
         $this->profileImage = $profileImage;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CommentRating[]
+     */
+    public function getCommentRatings(): Collection
+    {
+        return $this->commentRatings;
+    }
+
+    public function addCommentRating(CommentRating $commentRating): self
+    {
+        if (!$this->commentRatings->contains($commentRating)) {
+            $this->commentRatings[] = $commentRating;
+            $commentRating->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentRating(CommentRating $commentRating): self
+    {
+        if ($this->commentRatings->removeElement($commentRating)) {
+            // set the owning side to null (unless already changed)
+            if ($commentRating->getUser() === $this) {
+                $commentRating->setUser(null);
+            }
+        }
 
         return $this;
     }

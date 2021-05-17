@@ -148,9 +148,9 @@
                             <p>{{ comment.text }}
                                 {% if app.user %}
                                     <br>
-                                    <a href="#"><i class="fa fa-thumbs-down"></i></a>
+                                    <a href="{{ path('app.comment.dislike', {id: campaign.id, id2: comment.id}) }}"><i class="fa fa-thumbs-down"></i></a>
                                     {{ comment.rating }}
-                                    <a href="#"><i class="fa fa-thumbs-up"></i></a>
+                                    <a href="{{ path('app.comment.like', {id: campaign.id, id2: comment.id}) }}"><i class="fa fa-thumbs-up"></i></a>
                                 {% else %}
                                     <br>
                                     <i class="fa fa-thumbs-down"></i>

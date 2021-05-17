@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CommentRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -43,6 +45,16 @@ class Comment
      * @ORM\Column(type="integer")
      */
     private $rating;
+
+    /**
+     * @ORM\OneToMany(targetEntity=CommentRating::class, mappedBy="comment", orphanRemoval=true)
+     */
+    private $commentRatings;
+
+    public function __construct()
+    {
+        $this->commentRatings = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -105,6 +117,36 @@ class Comment
     public function setRating(int $rating): self
     {
         $this->rating = $rating;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CommentRating[]
+     */
+    public function getCommentRatings(): Collection
+    {
+        return $this->commentRatings;
+    }
+
+    public function addCommentRating(CommentRating $commentRating): self
+    {
+        if (!$this->commentRatings->contains($commentRating)) {
+            $this->commentRatings[] = $commentRating;
+            $commentRating->setComment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentRating(CommentRating $commentRating): self
+    {
+        if ($this->commentRatings->removeElement($commentRating)) {
+            // set the owning side to null (unless already changed)
+            if ($commentRating->getComment() === $this) {
+                $commentRating->setComment(null);
+            }
+        }
 
         return $this;
     }
