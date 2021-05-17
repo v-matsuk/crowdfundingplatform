@@ -103,7 +103,7 @@ class CampaignController extends AbstractController
             $entityManager->persist($gallery);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app.profile', array('id'=>$user));
+            return $this->redirectToRoute('app.profile', array('id'=>$id));
         }
 
         return $this->render('campaign/new.html.twig', [
@@ -122,7 +122,7 @@ class CampaignController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('app.profile', array('id'=>$campaign->getUser()));
+            return $this->redirectToRoute('app.profile', array('id'=>$id));
         }
 
         return $this->render('campaign/edit.html.twig', [
@@ -134,7 +134,7 @@ class CampaignController extends AbstractController
     #[Route('/{id}/delete', name: 'app.campaign.delete', methods: ['POST'])]
     public function delete(Request $request, Campaign $campaign): Response
     {
-        $id = $campaign->getUser();
+        $id = $campaign->getUser()->getId();
         if ($this->isCsrfTokenValid('delete'.$campaign->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($campaign);
