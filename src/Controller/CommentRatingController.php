@@ -16,7 +16,7 @@ class CommentRatingController extends AbstractController
     /**
      * @Route("/{id}/comment/{id2}/like", name="app.comment.like", requirements={"id": "[0-9]+", "id2": "[0-9]+"})
      */
-    public function like(Request $request, Comment $comment, $id, $id2): Response
+    public function like(Request $request, $id, $id2): Response
     {
         $commentRRep = $this->getDoctrine()->getRepository(CommentRating::class);
         $commentR = $commentRRep->findBy(['comment' => $id2]);
@@ -28,6 +28,8 @@ class CommentRatingController extends AbstractController
             return $this->redirectToRoute('app.campaign', array('id'=>$id));
         }
         $commentRating = new CommentRating();
+        $commentRep = $this->getDoctrine()->getRepository(Comment::class);
+        $comment = $commentRep->findOneBy(['id' => $id2]);
         $form = $this->createForm(CommentRatingType::class, $comment);
         $form->handleRequest($request);
 
@@ -55,7 +57,7 @@ class CommentRatingController extends AbstractController
     /**
      * @Route("/{id}/comment/{id2}/dislike", name="app.comment.dislike", requirements={"id": "[0-9]+", "id2": "[0-9]+"})
      */
-    public function dislike(Request $request, Comment $comment ,$id, $id2): Response
+    public function dislike(Request $request, $id, $id2): Response
     {
         $commentRRep = $this->getDoctrine()->getRepository(CommentRating::class);
         $commentR = $commentRRep->findBy(['comment' => $id2]);
@@ -67,6 +69,8 @@ class CommentRatingController extends AbstractController
             return $this->redirectToRoute('app.campaign', array('id'=>$id));
         }
         $commentRating = new CommentRating();
+        $commentRep = $this->getDoctrine()->getRepository(Comment::class);
+        $comment = $commentRep->findOneBy(['id' => $id2]);
         $form = $this->createForm(CommentRatingType::class, $comment);
         $form->handleRequest($request);
 
